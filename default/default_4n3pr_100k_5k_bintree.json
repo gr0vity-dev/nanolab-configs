@@ -1,5 +1,5 @@
 {
-    "testcase": "default_4n3pr_100k_5k_change",
+    "testcase": "default_4n3pr_100k_5k_bintree",
     "docker_tags": [
         "nanocurrency/nano:V25.0RC1"
     ],
