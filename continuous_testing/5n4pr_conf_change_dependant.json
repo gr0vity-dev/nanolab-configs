@@ -1,0 +1,127 @@
+{
+    "testcase": "5n4pr_change_dependant_cpu_limit",
+    "description": "Publish 300 individual change blocks from one account and await their confirmation",
+    "docker_tags": [
+        "nanocurrency/nano:V25.0RC3"
+    ],
+    "global": {
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml"
+    },
+    "commands": [
+        {
+            "type": "snippet",
+            "key": "nanomock_reset_copy_ledger_create",
+            "variables": {
+                "NL_CONFIG": "{NL_CONFIG_PATH}",
+                "REMOTE_IP": "172.17.0.1",
+                "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
+                "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit_create",
+            "variables": {
+                "PATH": "representatives.cpu",
+                "VALUE": 0.3
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_start_init"
+        },
+        {
+            "description": "Publish 3 * 100 dependant change blocks",
+            "type": "threaded",
+            "commands": [
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "start_logger",
+                    "delay": -0.1,
+                    "variables": {
+                        "logger_params": {
+                            "type": "rpc",
+                            "timeout": 20,
+                            "expected_blocks_count": 300,
+                            "included_peers": [
+                                "nl_pr1"
+                            ]
+                        },
+                        "sink_params": [
+                            {
+                                "type": "console"
+                            },
+                            {
+                                "type": "sql",
+                                "db_uri": "sqlite:///nanolab_test.db",
+                                "milestones": [
+                                    10,
+                                    25,
+                                    50,
+                                    75,
+                                    90,
+                                    99,
+                                    100
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "group": "g1",
+                    "method": "publish_create",
+                    "delay": 10,
+                    "variables": {
+                        "params": {
+                            "type": "change_wait_conf",
+                            "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
+                            "source_start_index": 0,
+                            "block_count": 100,
+                            "is_independent": false,
+                            "timeout_s": 5,
+                            "node_name": "nl_pr1"
+                        }
+                    }
+                },
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "publish_create",
+                    "group": "g1",
+                    "variables": {
+                        "params": {
+                            "type": "change_wait_conf",
+                            "source_seed": "10CA100000000000000000000000000000000000000000000000000000000000",
+                            "source_start_index": 0,
+                            "block_count": 100,
+                            "is_independent": false,
+                            "timeout_s": 5,
+                            "node_name": "nl_pr2"
+                        }
+                    }
+                },
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "publish_create",
+                    "group": "g1",
+                    "variables": {
+                        "params": {
+                            "type": "change_wait_conf",
+                            "source_seed": "10CA100000000000000000000000000000000000000000000000000000000088",
+                            "source_start_index": 0,
+                            "block_count": 100,
+                            "is_independent": false,
+                            "timeout_s": 5,
+                            "node_name": "nl_pr3"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
