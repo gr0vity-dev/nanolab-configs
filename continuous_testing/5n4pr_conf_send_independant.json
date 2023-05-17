@@ -26,7 +26,7 @@
                 "PATH": "representatives.cpu",
                 "VALUE": 0.3
             }
-        },        
+        },
         {
             "type": "snippet",
             "key": "nanomock_start_init"
@@ -39,8 +39,7 @@
                     "type": "python",
                     "class": "NodeInteraction",
                     "group": "g1",
-                    "method": "publish_create",
-                    "delay": 10,
+                    "method": "publish_create",                    
                     "variables": {
                         "params": {
                             "type": "send_wait_conf",

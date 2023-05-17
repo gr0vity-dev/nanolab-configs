@@ -39,8 +39,7 @@
                     "type": "python",
                     "class": "NodeInteraction",
                     "group": "g1",
-                    "method": "publish_create",
-                    "delay": 10,
+                    "method": "publish_create",                    
                     "variables": {
                         "params": {
                             "type": "change_wait_conf",

@@ -1,6 +1,6 @@
 {
-    "testcase": "5n4pr_send_dependant_cpu_limit",
-    "description": "Publish 3* 50 individual send+receive blocks from one account and await their confirmation",
+    "testcase": "5n4pr_send_independant_cpu_limit",
+    "description": "Publish 3* 50 individual send+receive blocks from multiple accounts and await their confirmation",
     "docker_tags": [
         "nanocurrency/nano:V25.0RC3"
     ],
@@ -32,23 +32,23 @@
             "key": "nanomock_start_init"
         },
         {
-            "description": "Publish 3 * 50 dependant send blocks",
+            "description": "Publish 3 * 50 independant send blocks",
             "type": "threaded",
             "commands": [
                 {
                     "type": "python",
                     "class": "NodeInteraction",
                     "group": "g1",
-                    "method": "publish_create",                    
+                    "method": "publish_create",
                     "variables": {
                         "params": {
                             "type": "send_wait_conf",
                             "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
-                            "destination_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
+                            "destination_seed": "10CA100000000000000000000000000000000000000000000000000000000999",
                             "send_amount_raw": 1,
                             "source_start_index": 0,
                             "block_count": 50,
-                            "is_independent": false,
+                            "is_independent": true,
                             "timeout_s": 5,
                             "node_name": "nl_pr1"
                         }
@@ -67,7 +67,7 @@
                             "send_amount_raw": 1,
                             "source_start_index": 50,
                             "block_count": 50,
-                            "is_independent": false,
+                            "is_independent": true,
                             "timeout_s": 5,
                             "node_name": "nl_pr2"
                         }
@@ -82,11 +82,11 @@
                         "params": {
                             "type": "send_wait_conf",
                             "source_seed": "10CA100000000000000000000000000000000000000000000000000000000088",
-                            "destination_seed": "10CA100000000000000000000000000000000000000000000000000000000088",
+                            "destination_seed": "10CA10000000000000000000000000000000000000000000000000000000A000",
                             "send_amount_raw": 1,
                             "source_start_index": 100,
                             "block_count": 50,
-                            "is_independent": false,
+                            "is_independent": true,
                             "timeout_s": 5,
                             "node_name": "nl_pr3"
                         }
