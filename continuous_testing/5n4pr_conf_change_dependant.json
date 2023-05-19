@@ -40,6 +40,7 @@
                     "class": "NodeInteraction",
                     "group": "g1",
                     "method": "publish_create",
+                    "delay": 5,
                     "variables": {
                         "params": {
                             "type": "change_wait_conf",
