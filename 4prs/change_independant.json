@@ -1,14 +1,13 @@
 {
     "testcase": "5n4pr_change_independant",
-    "desc_1": "Publish 50 individual change blocks from different accounts",
+    "desc_1": "Publish 100 individual change blocks from different accounts",
     "desc_2": "Always wait for the previous confirmation before sending the next block",
-    
-    "docker_tags": [
-        "nanocurrency/nano:V25.0RC3"
-    ],
+
+    "docker_tags": ["nanocurrency/nano:V25.0RC3"],
     "global": {
         "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml"
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+        "SETUP_NODES" : "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4"
     },
     "commands": [
         {
@@ -17,7 +16,7 @@
             "variables": {
                 "NL_CONFIG": "{NL_CONFIG_PATH}",
                 "REMOTE_IP": "172.17.0.1",
-                "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
+                "SETUP_NODES": "{SETUP_NODES}",
                 "LEDGER": "{LEDGER_PATH}"
             }
         },
@@ -27,6 +26,14 @@
             "variables": {
                 "PATH": "representatives.env.SPDLOG_LEVEL",
                 "VALUE": "trace"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "filelog_enable",
+                "VALUE": true
             }
         },
         {
@@ -42,15 +49,27 @@
             "key": "nanomock_start_init"
         },
         {
-            "description": "Publish 3 * 100 independant change blocks",
+            "type": "bash",
+            "command": "####################################################################"
+        },
+        {
+            "type": "bash",
+            "command": "for i in {SETUP_NODES}; do docker inspect $i|grep 'json\\.log'; done"
+        },
+        {
+            "type": "bash",
+            "command": "####################################################################"
+        },
+        {
+            "description": "Publish 3 * 100 dependant change blocks",
             "type": "threaded",
-            "commands": [
+            "commands": [               
                 {
                     "type": "python",
                     "class": "NodeInteraction",
                     "group": "g1",
                     "method": "publish_create",
-                    "delay": 5,
+                    "delay" : 5,
                     "variables": {
                         "params": {
                             "type": "change_wait_conf",
@@ -62,8 +81,12 @@
                             "node_name": "nl_pr1"
                         }
                     }
-                }               
+                }                
             ]
+        },
+        {
+            "type": "bash",
+            "command": "nanomock stop"
         }
     ]
 }
