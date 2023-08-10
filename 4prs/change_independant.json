@@ -1,6 +1,8 @@
 {
-    "testcase": "5n4pr_change_independant_cpu_limit",
-    "description": "Publish 300 individual change blocks from different accounts and wait for their confirmation",
+    "testcase": "5n4pr_change_independant",
+    "desc_1": "Publish 50 individual change blocks from different accounts",
+    "desc_2": "Always wait for the previous confirmation before sending the next block",
+    
     "docker_tags": [
         "nanocurrency/nano:V25.0RC3"
     ],
@@ -17,6 +19,14 @@
                 "REMOTE_IP": "172.17.0.1",
                 "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
                 "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.env.SPDLOG_LEVEL",
+                "VALUE": "trace"
             }
         },
         {
@@ -52,41 +62,7 @@
                             "node_name": "nl_pr1"
                         }
                     }
-                },
-                {
-                    "type": "python",
-                    "class": "NodeInteraction",
-                    "method": "publish_create",
-                    "group": "g1",
-                    "variables": {
-                        "params": {
-                            "type": "change_wait_conf",
-                            "source_seed": "10CA100000000000000000000000000000000000000000000000000000000000",
-                            "source_start_index": 0,
-                            "block_count": 100,
-                            "is_independent": true,
-                            "timeout_s": 5,
-                            "node_name": "nl_pr2"
-                        }
-                    }
-                },
-                {
-                    "type": "python",
-                    "class": "NodeInteraction",
-                    "method": "publish_create",
-                    "group": "g1",
-                    "variables": {
-                        "params": {
-                            "type": "change_wait_conf",
-                            "source_seed": "10CA100000000000000000000000000000000000000000000000000000000088",
-                            "source_start_index": 0,
-                            "block_count": 100,
-                            "is_independent": true,
-                            "timeout_s": 5,
-                            "node_name": "nl_pr3"
-                        }
-                    }
-                }
+                }               
             ]
         }
     ]

@@ -1,5 +1,5 @@
 {
-    "testcase": "5n4pr_10k_change_cpu_limit",
+    "testcase": "5n4pr_change_10k",
     "description": "Publish 10k independant change blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
     "docker_tags": [
         "nanocurrency/nano:V25.0RC3"
@@ -18,6 +18,14 @@
                 "REMOTE_IP": "172.17.0.1",
                 "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
                 "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.env.SPDLOG_LEVEL",
+                "VALUE": "trace"
             }
         },
         {

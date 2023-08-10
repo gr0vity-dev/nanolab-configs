@@ -1,148 +1,158 @@
 {
-  "testcase": "5n4pr_desync_10k",
-  "description": "Publish 2500 different blocks @500bps to each PR. Limit AEC to 251. Limit CPU to 0.5",
-  "docker_tags": ["nanocurrency/nano:V25.0"],
-  "global": {
-    "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
-    "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-    "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
-    "NODES_CONFIG": "https://bnano.info/public/node_configs/aec_251.toml"
- }, 
-  "commands": [
+    "testcase": "5n4pr_desync_10k",
+    "desc_1": "Publish 2500 different blocks @500bps to each PR.",
+    "desc_2": "Limit AEC to 251. Limit CPU to 0.5",
+
+    "docker_tags": ["nanocurrency/nano:V25.0"],
+    "global": {
+      "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
+      "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
+      "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+      "NODES_CONFIG": "https://bnano.info/public/node_configs/aec_251.toml"
+  }, 
+    "commands": [
+        {
+          "type": "snippet",
+          "key": "nanomock_reset_copy_ledger_create",
+          "variables": {
+              "NL_CONFIG": "{NL_CONFIG_PATH}",
+              "REMOTE_IP": "172.17.0.1",
+              "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
+              "LEDGER": "{LEDGER_PATH}"
+          }
+      },
       {
-        "type": "snippet",
-        "key": "nanomock_reset_copy_ledger_create",
-        "variables": {
-            "NL_CONFIG": "{NL_CONFIG_PATH}",
-            "REMOTE_IP": "172.17.0.1",
-            "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
-            "LEDGER": "{LEDGER_PATH}"
-        }
-    },
-    {
         "type": "snippet",
         "key": "nanomock_conf_edit",
         "variables": {
-            "PATH": "representatives.config_node_path",
-            "VALUE": "{NODES_CONFIG}"
+            "PATH": "representatives.env.SPDLOG_LEVEL",
+            "VALUE": "trace"
         }
-    },
-    {
-        "type": "snippet",
-        "key": "nanomock_conf_edit_create",
-        "variables": {
-            "PATH": "representatives.cpu",
-            "VALUE": 0.5
-        }
-    },
-    {
-        "type": "snippet",
-        "key": "nanomock_start_init"
-    }, 
-    {            
-      "type": "threaded",
-      "commands": [
-          {
-            "type": "python",
-            "class": "NodeInteraction",
-            "method": "start_logger",
-            "delay": -0.1,
-            "variables": {
-              "logger_params": {
-                "type": "rpc",
-                "timeout": 300,
-                "expected_blocks_count": 10000,
-                "included_peers": [
-                  "nl_pr1"
-                ]
-              },
-              "sink_params": [
-                {
-                  "type": "console"
-                },
-                {
-                  "type": "sql",
-                  "db_uri": "sqlite:///nanolab_test.db",
-                  "milestones": [
-                    10,25,50,75,90,99,100
-                  ]
-                }
-              ]
-            }
-          },
-          {
-              "type": "python",
-              "class": "NodeInteraction",
-              "method": "publish_blocks",
-              "variables": {
-                  "publish_params": {
-                      "blocks_path": "{BLOCK_PATH}",
-                      "bps": 500,
-                      "peers" : ["nl_pr1"],
-                      "start_round": 0,
-                      "end_round": 1,
-                      "subset": {
-                          "start_index": 0,
-                          "end_index": 2500
-                      }
-                  }
-              }
-          },
-          {
-              "type": "python",
-              "class": "NodeInteraction",
-              "method": "publish_blocks",
-              "variables": {
-                  "publish_params": {
-                      "blocks_path": "{BLOCK_PATH}",
-                      "bps": 500,
-                      "peers" : ["nl_pr2"],
-                      "start_round": 0,
-                      "end_round": 1,
-                      "subset": {
-                          "start_index": 2500,
-                          "end_index": 500
-                      }
-                  }
-              }
-          },
-          {
-              "type": "python",
-              "class": "NodeInteraction",
-              "method": "publish_blocks",
-              "variables": {
-                  "publish_params": {
-                      "blocks_path": "{BLOCK_PATH}",
-                      "bps": 500,
-                      "peers" : ["nl_pr3" ],
-                      "start_round": 0,
-                      "end_round": 1,
-                      "subset": {
-                          "start_index": 500,
-                          "end_index": 7500
-                      }
-                  }
-              }
-          },
-          {
-              "type": "python",
-              "class": "NodeInteraction",
-              "method": "publish_blocks",
-              "variables": {
-                  "publish_params": {
-                      "blocks_path": "{BLOCK_PATH}",
-                      "bps": 500,
-                      "peers" : ["nl_pr4" ],
-                      "start_round": 0,
-                      "end_round": 1,
-                      "subset": {
-                          "start_index": 7500,
-                          "end_index": 10000
-                      }
-                  }
-              }
+      },
+      {
+          "type": "snippet",
+          "key": "nanomock_conf_edit",
+          "variables": {
+              "PATH": "representatives.config_node_path",
+              "VALUE": "{NODES_CONFIG}"
           }
-      ]
-  }
-  ]
+      },
+      {
+          "type": "snippet",
+          "key": "nanomock_conf_edit_create",
+          "variables": {
+              "PATH": "representatives.cpu",
+              "VALUE": 0.5
+          }
+      },
+      {
+          "type": "snippet",
+          "key": "nanomock_start_init"
+      }, 
+      {            
+        "type": "threaded",
+        "commands": [
+            {
+              "type": "python",
+              "class": "NodeInteraction",
+              "method": "start_logger",
+              "delay": -0.1,
+              "variables": {
+                "logger_params": {
+                  "type": "rpc",
+                  "timeout": 300,
+                  "expected_blocks_count": 10000,
+                  "included_peers": [
+                    "nl_pr1"
+                  ]
+                },
+                "sink_params": [
+                  {
+                    "type": "console"
+                  },
+                  {
+                    "type": "sql",
+                    "db_uri": "sqlite:///nanolab_test.db",
+                    "milestones": [
+                      10,25,50,75,90,99,100
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+                "type": "python",
+                "class": "NodeInteraction",
+                "method": "publish_blocks",
+                "variables": {
+                    "publish_params": {
+                        "blocks_path": "{BLOCK_PATH}",
+                        "bps": 500,
+                        "peers" : ["nl_pr1"],
+                        "start_round": 0,
+                        "end_round": 1,
+                        "subset": {
+                            "start_index": 0,
+                            "end_index": 2500
+                        }
+                    }
+                }
+            },
+            {
+                "type": "python",
+                "class": "NodeInteraction",
+                "method": "publish_blocks",
+                "variables": {
+                    "publish_params": {
+                        "blocks_path": "{BLOCK_PATH}",
+                        "bps": 500,
+                        "peers" : ["nl_pr2"],
+                        "start_round": 0,
+                        "end_round": 1,
+                        "subset": {
+                            "start_index": 2500,
+                            "end_index": 500
+                        }
+                    }
+                }
+            },
+            {
+                "type": "python",
+                "class": "NodeInteraction",
+                "method": "publish_blocks",
+                "variables": {
+                    "publish_params": {
+                        "blocks_path": "{BLOCK_PATH}",
+                        "bps": 500,
+                        "peers" : ["nl_pr3" ],
+                        "start_round": 0,
+                        "end_round": 1,
+                        "subset": {
+                            "start_index": 500,
+                            "end_index": 7500
+                        }
+                    }
+                }
+            },
+            {
+                "type": "python",
+                "class": "NodeInteraction",
+                "method": "publish_blocks",
+                "variables": {
+                    "publish_params": {
+                        "blocks_path": "{BLOCK_PATH}",
+                        "bps": 500,
+                        "peers" : ["nl_pr4" ],
+                        "start_round": 0,
+                        "end_round": 1,
+                        "subset": {
+                            "start_index": 7500,
+                            "end_index": 10000
+                        }
+                    }
+                }
+            }
+        ]
+    }
+    ]
 }
