@@ -1,7 +1,6 @@
 {
     "testcase": "5n4pr_desync_10k",
-    "desc_1": "Publish 2500 different blocks @500bps to each PR.",
-    "desc_2": "Limit AEC to 251. Limit CPU to 0.5",
+    "description": "Publish 2500 different blocks @500bps to each PR. \nLimit AEC to 251. Limit CPU to 0.5",
 
     "docker_tags": ["nanocurrency/nano:V25.0"],
     "global": {

@@ -1,7 +1,6 @@
 {
     "testcase": "5n4pr_send_independant",
-    "desc_1": "Publish 50 individual send(+receive) blocks from different account",
-    "desc_2": "Always wait for the previous confirmation before sending the next block",
+    "description": "Publish 50 individual send(+receive) blocks from different account \nAlways wait for the previous confirmation before sending the next block",
    
     "docker_tags": ["nanocurrency/nano:V25.0RC3"],
     "global": {
