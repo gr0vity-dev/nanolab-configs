@@ -15,6 +15,10 @@
     },
     "commands": [
         {
+            "type": "bash",
+            "command": "[ $(cat /proc/sys/kernel/perf_event_paranoid) -lt 4 ] || { echo 'EXIT... /proc/sys/kernel/perf_event_paranoid must be < 4'; exit 1; }"            
+        },
+        {
             "type": "snippet",
             "key": "nanomock_reset_copy_ledger_create",
             "variables": {
@@ -113,6 +117,10 @@
         {
             "type": "bash",
             "command": "docker update --cpus=10 nl_pr2 && docker restart nl_pr2 && docker exec nl_pr2 sh -c 'perf script > perf.script' && docker cp nl_pr2:root/perf.script perf.script"             
+        },
+         {
+            "type": "bash",
+            "command": "chmod +x testcases/dowlnoads/stackcollapse-perf.pl && chmod +x testcases/dowlnoads/flamegraph.pl"             
         },
         {
             "type": "bash",
