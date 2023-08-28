@@ -24,10 +24,18 @@
         },
         {
             "type": "snippet",
-            "key": "nanomock_conf_edit_create",
+            "key": "nanomock_conf_edit",
             "variables": {
                 "PATH": "representatives.cpu",
                 "VALUE": 0.3
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit_create",
+            "variables": {
+                "PATH": "privileged",
+                "VALUE": "true"
             }
         },
         {
