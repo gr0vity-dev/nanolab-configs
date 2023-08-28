@@ -1,8 +1,8 @@
 {
     "testcase": "5n4pr_10k_bintree_cpu_limit",
-    "description": "Publish 10k bintree (send + receive) blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
+    "description": "Publish 2k bintree (send + receive) blocks to all 4PRs.\nEach PR is cpu limited to 0.1 vCPU",
     "docker_tags": [
-        "nanocurrency/nano:V25.1"
+        "nanocurrency/nano:V26.0DB13"
     ],
     "global": {
         "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_100k_bintree.json",
