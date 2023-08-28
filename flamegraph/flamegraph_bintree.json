@@ -1,0 +1,122 @@
+{
+    "testcase": "5n4pr_10k_bintree_cpu_limit",
+    "description": "Publish 10k bintree (send + receive) blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
+    "docker_tags": [
+        "nanocurrency/nano:V25.1"
+    ],
+    "global": {
+        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_100k_bintree.json",
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_init.ldb",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+        "FLAMEGRAPH" : "https://bnano.info/public/flamegraph.pl",
+        "COLLAPSE_PERF" : "https://bnano.info/public/stackcollapse-perf.pl",
+        "PERF_515" : "https://bnano.info/public/perf-5.15",
+        "SETUP_NODES" : "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4"
+    },
+    "commands": [
+        {
+            "type": "snippet",
+            "key": "nanomock_reset_copy_ledger_create",
+            "variables": {
+                "NL_CONFIG": "{NL_CONFIG_PATH}",
+                "REMOTE_IP": "172.17.0.1",
+                "SETUP_NODES": "{SETUP_NODES}",
+                "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "privileged",
+                "VALUE": "true"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit_create",
+            "variables": {
+                "PATH": "representatives.cpu",
+                "VALUE": 0.1
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_start_init"
+        },
+        {
+            "type": "bash",
+            "command": "docker exec nl_pr2 sh -c 'apt-get update && apt-get install -y linux-tools-generic binutils'"            
+        },
+        {
+            "type": "bash",
+            "command": "docker cp testcases/dowlnoads/perf-5.15 nl_pr2:/usr/bin/perf"            
+        },
+        {
+            "type": "bash",
+            "command": "docker exec nl_pr2 sh -c 'rm -f perf.script perf.data && chmod +x /usr/bin/perf && perf record -F 99 -p 1 -g --call-graph dwarf -- sleep 20 > /dev/null 2>&1 &' &"             
+        },  
+        {
+            "type": "threaded",
+            "commands": [
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "start_logger",
+                    "delay": -0.1,
+                    "variables": {
+                        "logger_params": {
+                            "type": "rpc",
+                            "timeout": 30,
+                            "expected_blocks_count": 2000,
+                            "included_peers": [
+                                "nl_pr1"
+                            ]
+                        },
+                        "sink_params": [
+                            {
+                                "type": "console"
+                            },
+                            {
+                                "type": "sql",
+                                "db_uri": "sqlite:///nanolab_test.db",
+                                "milestones": [
+                                    10,
+                                    25,
+                                    50,
+                                    75,
+                                    90,
+                                    99,
+                                    100
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 500,
+                            "subset": {
+                                "start_index": 0,
+                                "end_index": 2000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                }
+            ]
+        },
+        {
+            "type": "bash",
+            "command": "docker update --cpus=10 nl_pr2 && docker restart nl_pr2 && docker exec nl_pr2 sh -c 'perf script > perf.script' && docker cp nl_pr2:root/perf.script perf.script"             
+        },
+        {
+            "type": "bash",
+            "command": "testcases/dowlnoads/stackcollapse-perf.pl perf.script > perf.folded && cat perf.folded | testcases/dowlnoads/flamegraph.pl  > flamegraph_$(date +'_%Y-%m-%d_%H-%M').svg"             
+        }
+    ]
+}
