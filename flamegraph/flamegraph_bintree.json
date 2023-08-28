@@ -15,10 +15,6 @@
     },
     "commands": [
         {
-            "type": "bash",
-            "command": "[ $(cat /proc/sys/kernel/perf_event_paranoid) -lt 4 ] || { echo 'EXIT... /proc/sys/kernel/perf_event_paranoid must be < 4'; exit 1; }"            
-        },
-        {
             "type": "snippet",
             "key": "nanomock_reset_copy_ledger_create",
             "variables": {
@@ -124,7 +120,7 @@
         },
         {
             "type": "bash",
-            "command": "testcases/dowlnoads/stackcollapse-perf.pl perf.script > perf.folded && cat perf.folded | testcases/dowlnoads/flamegraph.pl  > flamegraph_$(date +'_%Y-%m-%d_%H-%M').svg"             
+            "command": "testcases/dowlnoads/stackcollapse-perf.pl perf.script > perf.folded && cat perf.folded | testcases/dowlnoads/flamegraph.pl  > flamegraph_bintree_$(date +'%Y-%m-%d_%H-%M').svg"             
         }
     ]
 }
