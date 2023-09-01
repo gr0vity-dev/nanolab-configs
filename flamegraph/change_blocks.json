@@ -1,12 +1,12 @@
 {
-    "testcase": "5n4pr_10k_bintree_cpu_limit",
-    "description": "Publish 2k bintree (send + receive) blocks to all 4PRs.\nEach PR is cpu limited to 0.1 vCPU",
+    "testcase": "5n4pr_10k_change_cpu_limit",
+    "description": "Publish 10k independant change blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
     "docker_tags": [
-        "nanocurrency/nano:V26.0DB13"
+        "nanocurrency/nano:V25.0RC3"
     ],
     "global": {
-        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_100k_bintree.json",
-        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_init.ldb",
+        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
         "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
         "SETUP_NODES" : "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4"
     },
@@ -26,7 +26,7 @@
             "key": "nanomock_conf_edit_create",
             "variables": {
                 "PATH": "representatives.cpu",
-                "VALUE": 0.1
+                "VALUE": 0.3
             }
         },
         {
@@ -64,6 +64,8 @@
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
                             "bps": 500,
+                            "start_round": 0,
+                            "end_round": 1,
                             "subset": {
                                 "start_index": 0,
                                 "end_index": 2000
