@@ -1,0 +1,139 @@
+{
+    "testcase": "5n4pr_500k_change_5x2",
+    "description": "Publish 500k independant change blocks to all 4PRs.\nEach PR is cpu limited to 2 vCPU",
+    "docker_tags": [
+        "nanocurrency/nano:V25.1"
+    ],
+    "global": {
+        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+        "TEST_TIMEOUT": "600"
+    },
+    "commands": [
+        {
+            "type": "snippet",
+            "key": "nanomock_reset_copy_ledger_create",
+            "variables": {
+                "NL_CONFIG": "{NL_CONFIG_PATH}",
+                "REMOTE_IP": "172.17.0.1",
+                "SETUP_NODES": "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4",
+                "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.cpu",
+                "VALUE": 2
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit_create",
+            "variables": {
+                "PATH": "privileged",
+                "VALUE": "true"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_start_init"
+        },
+        {
+            "type": "threaded",
+            "commands": [
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "start_logger",
+                    "delay": -0.1,
+                    "variables": {
+                        "logger_params": {
+                            "type": "rpc",
+                            "timeout": "{TEST_TIMEOUT}",
+                            "expected_blocks_count": 500000,
+                            "included_peers": [
+                                "nl_pr2"
+                            ]
+                        },
+                        "sink_params": [
+                            {
+                                "type": "console"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1500,
+                            "start_round": 0,
+                            "end_round": 10,
+                            "subset": {
+                                "start_index": 0,
+                                "end_index": 12500
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1500,
+                            "start_round": 0,
+                            "end_round": 10,
+                            "subset": {
+                                "start_index": 12500,
+                                "end_index": 25000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1500,
+                            "start_round": 0,
+                            "end_round": 10,
+                            "subset": {
+                                "start_index": 25000,
+                                "end_index": 37500
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1500,
+                            "start_round": 0,
+                            "end_round": 10,
+                            "subset": {
+                                "start_index": 37500,
+                                "end_index": 50000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                }
+            ]
+        }
+    ]
+}
