@@ -29,19 +29,35 @@
         }
       },
       {
-          "type": "snippet",
-          "key": "nanomock_conf_edit",
-          "variables": {
-              "PATH": "representatives.config_node_path",
-              "VALUE": "{NODES_CONFIG}"
-          }
-      },
+        "type": "snippet",
+        "key": "nanomock_conf_edit",
+        "variables": {
+            "PATH": "filelog_enable",
+            "VALUE": true
+        }
+     },
+     {
+        "type": "snippet",
+        "key": "nanomock_conf_edit",
+        "variables": {
+            "PATH": "representatives.nodes.*.config_node_path",
+            "VALUE": "testcases/dowlnoads/aec_251.toml"
+        }
+     },
+    {
+        "type": "snippet",
+        "key": "nanomock_conf_edit_create",
+        "variables": {
+            "PATH": "privileged",
+            "VALUE": "true"
+        }
+    },
       {
           "type": "snippet",
           "key": "nanomock_conf_edit_create",
           "variables": {
               "PATH": "representatives.cpu",
-              "VALUE": 0.5
+              "VALUE": 1
           }
       },
       {
