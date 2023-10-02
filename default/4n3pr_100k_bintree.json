@@ -47,16 +47,7 @@
                                 "nl_genesis"
                             ]
                         },
-                        "sink_params": [
-                            {
-                                "type": "console"
-                            },
-                            {
-                                "type": "sql",
-                                "db_uri": "sqlite:///nanolab_test.db",
-                                "milestones": [10,25,50,75,90,99,100]
-                            }
-                        ]
+                        "sink_params": [{"type": "console"}]
                     }
                 },
                 {
@@ -71,6 +62,10 @@
                     }
                 }
             ]
+        },
+        {
+            "type": "bash",
+            "command": "nanomock stop"
         }
     ]
 }

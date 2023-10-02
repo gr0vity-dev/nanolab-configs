@@ -6,9 +6,9 @@
     "global": {
       "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
       "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-      "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+      "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/grafana_5n4pr.toml",
       "NODES_CONFIG": "https://bnano.info/public/node_configs/aec_251.toml"
-  }, 
+  },
     "commands": [
         {
           "type": "snippet",
@@ -47,8 +47,8 @@
       {
           "type": "snippet",
           "key": "nanomock_start_init"
-      }, 
-      {            
+      },
+      {
         "type": "threaded",
         "commands": [
             {
@@ -65,18 +65,7 @@
                     "nl_pr1"
                   ]
                 },
-                "sink_params": [
-                  {
-                    "type": "console"
-                  },
-                  {
-                    "type": "sql",
-                    "db_uri": "sqlite:///nanolab_test.db",
-                    "milestones": [
-                      10,25,50,75,90,99,100
-                    ]
-                  }
-                ]
+                "sink_params": [{"type": "console"}]
               }
             },
             {
@@ -152,6 +141,10 @@
                 }
             }
         ]
+    },
+    {
+        "type": "bash",
+        "command": "nanomock stop"
     }
     ]
 }

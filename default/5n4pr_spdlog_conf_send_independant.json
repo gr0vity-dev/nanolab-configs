@@ -1,11 +1,11 @@
 {
     "testcase": "5n4pr_send_independant",
     "description": "Publish 50 individual send(+receive) blocks from different account \nAlways wait for the previous confirmation before sending the next block",
-   
+
     "docker_tags": ["nanocurrency/nano:V25.0RC3"],
     "global": {
         "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/grafana_5n4pr.toml",
         "SETUP_NODES" : "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4"
     },
     "commands": [
@@ -62,7 +62,7 @@
         {
             "description": "Publish 3 * 100 dependant change blocks",
             "type": "threaded",
-            "commands": [               
+            "commands": [
                 {
                     "type": "python",
                     "class": "NodeInteraction",
@@ -82,7 +82,7 @@
                             "node_name": "nl_pr1"
                         }
                     }
-                }            
+                }
             ]
         },
         {

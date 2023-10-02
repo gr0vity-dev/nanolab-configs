@@ -1,0 +1,157 @@
+{
+    "testcase": "5n4pr_20k_change_cpu_limit",
+    "description": "Publish 10k change from 2k accounts to all nodes.\nEach PR is cpu limited to 2 vCPU",
+    "docker_tags": [
+        "nanocurrency/nano:V25.0RC3"
+    ],
+    "global": {
+        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
+        "NODE_CONFIG_PATH": "https://bnano.info/public/node_configs/aec_251.toml",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/grafana_5n4pr.toml",
+        "TEST_TIMEOUT": "90",
+        "SETUP_NODES" : "nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4"
+    },
+    "commands": [
+        {
+            "type": "snippet",
+            "key": "nanomock_reset_copy_ledger_create",
+            "variables": {
+                "NL_CONFIG": "{NL_CONFIG_PATH}",
+                "REMOTE_IP": "172.17.0.1",
+                "SETUP_NODES": "{SETUP_NODES}",
+                "LEDGER": "{LEDGER_PATH}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.cpu",
+                "VALUE": 2
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.env.SPDLOG_LEVEL",
+                "VALUE": "trace"
+            }
+          },
+          {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "filelog_enable",
+                "VALUE": true
+            }
+         },
+         {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.nodes.*.config_node_path",
+                "VALUE": "testcases/dowlnoads/aec_251.toml"
+            }
+         },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit_create",
+            "variables": {
+                "PATH": "privileged",
+                "VALUE": "true"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_start_init"
+        },
+        {
+            "type": "threaded",
+            "commands": [
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "method": "start_logger",
+                    "delay": -0.1,
+                    "variables": {
+                        "logger_params": {
+                            "type": "rpc",
+                            "timeout": "{TEST_TIMEOUT}",
+                            "expected_blocks_count": 10000,
+                            "included_peers": [
+                                "nl_pr1"
+                            ]
+                        },
+                        "sink_params": [
+                            {
+                                "type": "console"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 600,
+                            "start_round": 0,
+                            "end_round": 5,
+                            "subset": {
+                                "start_index": 0,
+                                "end_index": 667
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 600,
+                            "start_round": 0,
+                            "end_round": 5,
+                            "subset": {
+                                "start_index": 667,
+                                "end_index": 1333
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 600,
+                            "start_round": 0,
+                            "end_round": 5,
+                            "subset": {
+                                "start_index": 1333,
+                                "end_index": 2000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                }
+            ]
+        },
+        {
+            "type": "bash",
+            "command": "nanomock stop && sleep 5"
+        },
+        {
+            "type": "bash",
+            "skip" : true,
+            "command": "export DB_NAME=capture_$(date +'%Y_%j_%H%M%S') && for i in ${SETUP_NODES}; do ls $(docker inspect $i | jq -r '.[0].LogPath')* | xargs -I {{}} nanologp --file {{}} --node $i --format json --db $DB_NAME; done"
+        }
+    ]
+}

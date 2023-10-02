@@ -1,13 +1,13 @@
 {
-    "testcase": "5n4pr_10k_change_cpu_limit",
-    "description": "Publish 10k independant change blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
+    "testcase": "5n4pr_bintree_10k",
+    "description": "Publish 10k bintree (send + receive) blocks to all 4PRs.\nEach PR is cpu limited to 0.3 vCPU",
     "docker_tags": [
         "nanocurrency/nano:V25.0RC3"
     ],
     "global": {
-        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
-        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml"
+        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_100k_bintree.json",
+        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_init.ldb",
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/grafana_5n4pr.toml"
     },
     "commands": [
         {
@@ -22,12 +22,20 @@
         },
         {
             "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.env.SPDLOG_LEVEL",
+                "VALUE": "trace"
+            }
+        },
+        {
+            "type": "snippet",
             "key": "nanomock_conf_edit_create",
             "variables": {
                 "PATH": "representatives.cpu",
                 "VALUE": 0.3
             }
-        },        
+        },
         {
             "type": "snippet",
             "key": "nanomock_start_init"
@@ -49,16 +57,7 @@
                                 "nl_pr1"
                             ]
                         },
-                        "sink_params": [
-                            {
-                                "type": "console"
-                            },
-                            {
-                                "type": "sql",
-                                "db_uri": "sqlite:///nanolab_test.db",
-                                "milestones": [10,25,50,75,90,99,100]
-                            }
-                        ]
+                        "sink_params": [{"type": "console"}]
                     }
                 },
                 {
@@ -68,8 +67,6 @@
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
                             "bps": 500,
-                            "start_round": 0,
-                            "end_round": 1,
                             "subset": {
                                 "start_index": 0,
                                 "end_index": 10000
@@ -79,6 +76,10 @@
                     "class": "NodeInteraction"
                 }
             ]
+        },
+        {
+            "type": "bash",
+            "command": "nanomock stop"
         }
     ]
 }

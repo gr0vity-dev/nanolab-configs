@@ -1,13 +1,13 @@
 {
-    "testcase": "5n4pr_bucket_prio_send_cpu_limit",
-    "description": "Bucket priority of send blocks under saturation",
+    "testcase": "5n4pr_bucket_prio_change_cpu_limit",
+    "description": "Bucket priority of change blocks under saturation",
     "docker_tags": [
         "nanocurrency/nano:V25.0RC3"
     ],
     "global": {
         "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
         "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml"
+        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/grafana_5n4pr.toml"
     },
     "commands": [
         {
@@ -27,7 +27,7 @@
                 "PATH": "representatives.cpu",
                 "VALUE": 0.3
             }
-        },        
+        },
         {
             "type": "snippet",
             "key": "nanomock_start_init"
@@ -47,20 +47,10 @@
                             "timeout": 20,
                             "expected_blocks_count": 2000,
                             "included_peers": [
-                                "nl_pr1",
-                                "nl_pr2"
+                                "nl_pr1"
                             ]
                         },
-                        "sink_params": [
-                            {
-                                "type": "console"
-                            },
-                            {
-                                "type": "sql",
-                                "db_uri": "sqlite:///nanolab_test.db",
-                                "milestones": [10,25,50,75,90,99,100]
-                            }
-                        ]
+                        "sink_params": [{"type": "console"}]
                     }
                 },
                 {
@@ -123,10 +113,8 @@
                     "delay": 10,
                     "variables": {
                         "params": {
-                            "type": "send_wait_conf",
+                            "type": "change_wait_conf",
                             "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
-                            "destination_seed": "10CA100000000000000000000000000000000000000000000000000000000999",
-                            "send_amount_raw": 1,
                             "source_start_index": 0,
                             "block_count": 10,
                             "is_independent": true,
@@ -142,10 +130,8 @@
                     "group": "g1",
                     "variables": {
                         "params": {
-                            "type": "send_wait_conf",
+                            "type": "change_wait_conf",
                             "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
-                            "destination_seed": "10CA100000000000000000000000000000000000000000000000000000000999",
-                            "send_amount_raw": 1,
                             "source_start_index": 10,
                             "block_count": 10,
                             "is_independent": true,
@@ -161,10 +147,8 @@
                     "group": "g1",
                     "variables": {
                         "params": {
-                            "type": "send_wait_conf",
+                            "type": "change_wait_conf",
                             "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
-                            "destination_seed": "10CA100000000000000000000000000000000000000000000000000000000999",
-                            "send_amount_raw": 1,
                             "source_start_index": 20,
                             "block_count": 10,
                             "is_independent": true,
@@ -174,6 +158,10 @@
                     }
                 }
             ]
+        },
+        {
+            "type": "bash",
+            "command": "nanomock stop"
         }
     ]
 }
