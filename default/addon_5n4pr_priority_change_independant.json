@@ -1,0 +1,33 @@
+{
+    "testcase": "5n4pr_send_independant_cpu_limit",
+    "description": "Publish 3* 50 individual send+receive blocks from multiple accounts and await their confirmation",
+    "docker_tags": [
+        "nanocurrency/nano:V25.0RC3"
+    ],
+    "commands": [
+	{
+            "description": "Publish 3 * 50 independant send blocks",
+            "type": "threaded",
+            "commands": [
+                {
+                    "type": "python",
+                    "class": "NodeInteraction",
+                    "group": "g1",
+                    "method": "publish_create",
+                    "delay": 0,
+                    "variables": {
+                        "params": {
+                            "type": "change_wait_conf",
+                            "source_seed": "10CA10000000000000000000000000000000000000000000000000000000000A",
+                            "source_start_index": 10,
+                            "block_count": 10,
+                            "is_independent": true,
+                            "timeout_s": 5,
+                            "node_name": "nl_pr1"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
