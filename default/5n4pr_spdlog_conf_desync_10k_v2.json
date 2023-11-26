@@ -52,7 +52,7 @@
             "key": "nanomock_conf_edit",
             "variables": {
                 "PATH": "representatives.nodes.*.config_node_path",
-                "VALUE": "testcases/dowlnoads/aec_251.toml"
+                "VALUE": "testcases/downloads/aec_251.toml"
             }
          },
         {
