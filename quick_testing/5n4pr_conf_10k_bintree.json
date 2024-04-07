@@ -43,7 +43,7 @@
                     "variables": {
                         "logger_params": {
                             "type": "rpc",
-                            "timeout": 90,
+                            "timeout": 120,
                             "expected_blocks_count": 10000,
                             "included_peers": [
                                 "nl_pr1"
@@ -75,15 +75,48 @@
                     "variables": {
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
-                            "bps": 500,
+                            "bps": 300,
                             "subset": {
                                 "start_index": 0,
-                                "end_index": 10000
+                                "end_index": 6000
                             }
                         }
                     },
                     "class": "NodeInteraction"
+                },
+		{
+			"type": "python",
+			"method": "publish_blocks",
+			"delay" : 15,
+			"variables": {
+			"publish_params": {
+				"blocks_path": "{BLOCK_PATH}",
+				"bps": 300,
+				"subset": {
+					"start_index": 5000,
+					"end_index": 10000
+					}
+				}
+			},
+			"class": "NodeInteraction"
+		},
+                {
+                        "type": "python",
+                        "method": "publish_blocks",
+                        "delay" : 40,
+                        "variables": {
+                        "publish_params": {
+                                "blocks_path": "{BLOCK_PATH}",
+                                "bps": 1000,
+                                "subset": {
+                                        "start_index": 0,
+                                        "end_index": 10000
+                                        }
+                                }
+                        },
+                        "class": "NodeInteraction"
                 }
+
             ]
         }
     ]

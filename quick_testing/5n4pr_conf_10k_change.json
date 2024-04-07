@@ -75,7 +75,93 @@
                     "variables": {
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
-                            "bps": 500,
+                            "bps": 100,
+                            "start_round": 0,
+                            "end_round": 1,
+                            "subset": {
+                                "start_index": 0,
+                                "end_index": 2000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 100,
+                            "start_round": 0,
+                            "end_round": 1,
+                            "subset": {
+                                "start_index": 2000,
+                                "end_index": 4000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 100,
+                            "start_round": 0,
+                            "end_round": 1,
+                            "subset": {
+                                "start_index": 4000,
+                                "end_index": 6000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 100,
+                            "start_round": 0,
+                            "end_round": 1,
+                            "subset": {
+                                "start_index": 6000,
+                                "end_index": 8000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 100,
+                            "start_round": 0,
+                            "end_round": 1,
+                            "subset": {
+                                "start_index": 8000,
+                                "end_index": 10000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+		    "delay" : 20,
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1000,
                             "start_round": 0,
                             "end_round": 1,
                             "subset": {
@@ -86,6 +172,7 @@
                     },
                     "class": "NodeInteraction"
                 }
+
             ]
         }
     ]
