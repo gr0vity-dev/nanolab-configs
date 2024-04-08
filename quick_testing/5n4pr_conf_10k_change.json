@@ -43,7 +43,7 @@
                     "variables": {
                         "logger_params": {
                             "type": "rpc",
-                            "timeout": 90,
+                            "timeout": 180,
                             "expected_blocks_count": 10000,
                             "included_peers": [
                                 "nl_pr1"
