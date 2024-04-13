@@ -5,9 +5,9 @@
         "nanocurrency/nano:V25.0RC3"
     ],
     "global": {
-        "BLOCK_PATH": "https://bnano.info/public/saved_blocks/5n4pr_bucket_rounds.json",
-        "LEDGER_PATH": "https://bnano.info/public/saved_ledgers/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-        "NL_CONFIG_PATH": "https://bnano.info/public/saved_configs/default_5n4pr.toml"
+        "BLOCK_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_bucket_rounds_short.json",
+        "LEDGER_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
+        "NL_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/5n4pr_quicktesting_config.toml"
     },
     "commands": [
         {
@@ -22,12 +22,20 @@
         },
         {
             "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "prom_runid",
+                "VALUE": "5n4pr_conf_10k_change_{docker_tag}"
+            }
+        },
+        {
+            "type": "snippet",
             "key": "nanomock_conf_edit_create",
             "variables": {
                 "PATH": "representatives.cpu",
                 "VALUE": 0.3
             }
-        },
+        },        
         {
             "type": "snippet",
             "key": "nanomock_start_init"
