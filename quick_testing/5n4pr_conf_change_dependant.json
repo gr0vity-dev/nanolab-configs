@@ -34,13 +34,13 @@
         {
             "description": "Publish 3 * 100 dependant change blocks",
             "type": "threaded",
-            "commands": [               
+            "commands": [
                 {
                     "type": "python",
                     "class": "NodeInteraction",
                     "group": "g1",
                     "method": "publish_create",
-                    "delay" : 5,
+                    "delay": 5,
                     "variables": {
                         "params": {
                             "type": "change_wait_conf",

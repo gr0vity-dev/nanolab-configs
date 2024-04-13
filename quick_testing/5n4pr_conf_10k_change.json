@@ -157,7 +157,7 @@
                 {
                     "type": "python",
                     "method": "publish_blocks",
-		    "delay" : 20,
+                    "delay": 20,
                     "variables": {
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
@@ -172,7 +172,6 @@
                     },
                     "class": "NodeInteraction"
                 }
-
             ]
         }
     ]

@@ -84,39 +84,38 @@
                     },
                     "class": "NodeInteraction"
                 },
-		{
-			"type": "python",
-			"method": "publish_blocks",
-			"delay" : 15,
-			"variables": {
-			"publish_params": {
-				"blocks_path": "{BLOCK_PATH}",
-				"bps": 300,
-				"subset": {
-					"start_index": 5000,
-					"end_index": 10000
-					}
-				}
-			},
-			"class": "NodeInteraction"
-		},
                 {
-                        "type": "python",
-                        "method": "publish_blocks",
-                        "delay" : 40,
-                        "variables": {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "delay": 15,
+                    "variables": {
                         "publish_params": {
-                                "blocks_path": "{BLOCK_PATH}",
-                                "bps": 1000,
-                                "subset": {
-                                        "start_index": 0,
-                                        "end_index": 10000
-                                        }
-                                }
-                        },
-                        "class": "NodeInteraction"
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 300,
+                            "subset": {
+                                "start_index": 5000,
+                                "end_index": 10000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
+                },
+                {
+                    "type": "python",
+                    "method": "publish_blocks",
+                    "delay": 40,
+                    "variables": {
+                        "publish_params": {
+                            "blocks_path": "{BLOCK_PATH}",
+                            "bps": 1000,
+                            "subset": {
+                                "start_index": 0,
+                                "end_index": 10000
+                            }
+                        }
+                    },
+                    "class": "NodeInteraction"
                 }
-
             ]
         }
     ]
