@@ -6,7 +6,7 @@
     "global": {
       "BLOCK_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_bucket_rounds_short.json",
       "LEDGER_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_bucket0-1-88-90-100_10kaccs.ldb",
-      "NL_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/5n4pr_quicktesting_config.toml",
+      "NL_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/node-configs/5n4pr_quicktesting_config.toml",
       "NODES_CONFIG": "https://bnano.info/public/node_configs/aec_251.toml"
   }, 
     "commands": [

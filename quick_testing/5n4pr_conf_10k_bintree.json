@@ -7,7 +7,8 @@
     "global": {
         "BLOCK_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_100k_bintree_short.json",
         "LEDGER_PATH": "https://frmpm7m0wpcq.objectstorage.eu-frankfurt-1.oci.customer-oci.com/n/frmpm7m0wpcq/b/nanoct/o/5n4pr_init.ldb",
-        "NL_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/5n4pr_quicktesting_config.toml"
+        "NL_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/node-configs/5n4pr_quicktesting_config.toml",
+        "NODE_CONFIG_PATH": "https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/node-configs/config-node_5n4pr_spam_buffer.toml"
     },
     "commands": [
         {
@@ -26,6 +27,14 @@
             "variables": {
                 "PATH": "prom_runid",
                 "VALUE": "5n4pr_conf_10k_bintree_{docker_tag}"
+            }
+        },
+        {
+            "type": "snippet",
+            "key": "nanomock_conf_edit",
+            "variables": {
+                "PATH": "representatives.nodes.*.config_node_path",
+                "VALUE": "{NODE_CONFIG_PATH}"
             }
         },
         {
@@ -83,39 +92,7 @@
                     "variables": {
                         "publish_params": {
                             "blocks_path": "{BLOCK_PATH}",
-                            "bps": 300,
-                            "subset": {
-                                "start_index": 0,
-                                "end_index": 6000
-                            }
-                        }
-                    },
-                    "class": "NodeInteraction"
-                },
-                {
-                    "type": "python",
-                    "method": "publish_blocks",
-                    "delay": 15,
-                    "variables": {
-                        "publish_params": {
-                            "blocks_path": "{BLOCK_PATH}",
-                            "bps": 300,
-                            "subset": {
-                                "start_index": 5000,
-                                "end_index": 10000
-                            }
-                        }
-                    },
-                    "class": "NodeInteraction"
-                },
-                {
-                    "type": "python",
-                    "method": "publish_blocks",
-                    "delay": 40,
-                    "variables": {
-                        "publish_params": {
-                            "blocks_path": "{BLOCK_PATH}",
-                            "bps": 1000,
+                            "bps": 500,
                             "subset": {
                                 "start_index": 0,
                                 "end_index": 10000
