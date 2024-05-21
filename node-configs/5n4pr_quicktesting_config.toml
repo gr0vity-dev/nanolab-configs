@@ -23,6 +23,7 @@ docker_tag = "nanocurrency/nano:V25.0RC3"
 name = "genesis"
 vote_weight_percent = 0
 enable_voting = false
+node_flags = ["--disable_max_peers_per_ip"]
 
 [[representatives.nodes]]
 name = "pr1"
